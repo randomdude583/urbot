@@ -2,17 +2,21 @@ const data = require('../data');
 const helpers = require('../helpers');
 const commands = require('./commands');
 
+const Logger = require('@common/utils/logger');
+const logger = new Logger(__filename);
 
-//TODO add cooldown
+
+// TODO add cooldown
 
 
 const checkKeyphrase = async (msg) => {
+    logger.extra({ msg });
 
     const phrases = await data.keyphrase.getAll();
 
-    let matches = []
+    let matches = [];
 
-    phrases.forEach(phrase => {
+    phrases.forEach((phrase) => {
         if (msg.content.includes(phrase.phrase)) {
             matches.push(phrase);
         }
@@ -23,10 +27,10 @@ const checkKeyphrase = async (msg) => {
         if (Math.random() < matches[i].freq) {
             const responses = await data.response.getAll(matches[i].id);
 
-            if(responses.length > 0){
-                //Pick one based on weight
-                array = [];
-                responses.forEach(response => {
+            if (responses.length > 0) {
+                // Pick one based on weight
+                let array = [];
+                responses.forEach((response) => {
                     for (var i = 0; i < response.weight; i++) {
                         array.push(response);
                     }
@@ -34,14 +38,16 @@ const checkKeyphrase = async (msg) => {
 
                 const response = array[Math.floor(Math.random() * array.length)];
 
-                //Handle command based responses
-                if(response.text[0] === '/'){
+                // Handle command based responses
+                if (response.text[0] === '/') {
                     msg.content = response.text;
                     await commands.checkCommand(msg);
                 } else {
-                    let files = []
-                    if(response.image) files.push(response.image);
-                    msg.channel.send(response.text, {files});
+                    let files = [];
+                    if (response.image) {
+                        files.push(response.image);
+                    }
+                    msg.channel.send(response.text, { files });
                 }
                 
                 break;
@@ -49,10 +55,7 @@ const checkKeyphrase = async (msg) => {
         }
     }
 
-}
-
-
-
+};
 
 
 module.exports = {

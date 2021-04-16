@@ -1,5 +1,8 @@
 const boom = require('@hapi/boom');
 
+const Logger = require('@common/utils/logger');
+const logger = new Logger(__filename);
+
 const { chunkArray } = require('../common');
 
 const TIMESTAMP_COLUMNS = ['created_at', 'updated_at', 'deleted_at'];
@@ -28,7 +31,7 @@ const convertCustomValues = (o) => {
             try {
                 o[key] = JSON.parse(o[key]);
             } catch (error) {
-                console.log(`Unable to JSON.parse(${key})`, error);
+                logger.error(`Unable to JSON.parse(${key})`, error);
             }
         } else if (k.endsWith('_list')) {
             // convert lists of ids to array of ids
@@ -41,7 +44,7 @@ const convertCustomValues = (o) => {
                     o[_k] = o[_k].map((id) => parseInt(id));
                 }
             } catch (error) {
-                console.log(`Unable to .split(',') ${key}`), error;
+                logger.error(`Unable to .split(',') ${key}`), error;
             }
         } else if (k.endsWith('_at')) {
             try {

@@ -1,8 +1,10 @@
 const errors = require('../errors');
 
+const Logger = require('@common/utils/logger');
+const logger = new Logger(__filename);
+
 const db = require('../utils/mysql');
 const { throwNotFound, parseArrayOfObjFields, parseObjFields } = require('../utils/mysql/helpers');
-
 
 
 const TABLE = 'joke';
@@ -13,14 +15,15 @@ const COLUMNS = [
     'created_at',
     'updated_at',
     'deleted_at',
-]
+];
 
 
-
-//TODO implement schema validation
+// TODO implement schema validation
 
 
 const get = async (id) => {
+    logger.extra({ id });
+
     if (!id) {
         throw errors.joke.NOT_FOUND('empty id');
     }
@@ -46,6 +49,8 @@ const get = async (id) => {
 
 
 const getAll = async () => {
+    logger.extra( );
+
     const stmt = `
     SELECT 
       ${COLUMNS.join()}
@@ -59,10 +64,10 @@ const getAll = async () => {
 };
 
 
-
-
 const createMultiple = async (array) => {
-    //let validatedArray = array.map((channel) => validate(channel, schemas.channel));
+    logger.extra({ array });
+
+    // let validatedArray = array.map((channel) => validate(channel, schemas.channel));
     let validatedArray = array;
 
     if (validatedArray.length == 0) {
@@ -92,11 +97,15 @@ const createMultiple = async (array) => {
 };
 
 const create = async (joke) => {
+    logger.extra({ joke });
+
     await createMultiple([joke]);
 };
 
 
 const removeMultiple = async (array) => {
+    logger.extra({ array });
+
     if (array.length == 0) {
         return;
     }
@@ -122,10 +131,10 @@ const removeMultiple = async (array) => {
 };
 
 const remove = async (id) => {
+    logger.extra({ id });
+
     await removeMultiple([id]);
 };
-
-
 
 
 module.exports = {
@@ -135,4 +144,4 @@ module.exports = {
     create,
     removeMultiple,
     remove,
-}
+};

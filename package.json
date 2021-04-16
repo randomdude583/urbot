@@ -27,6 +27,7 @@
     "test:run:dev": "yarn test:run:single test/test.000.basic.js"
   },
   "dependencies": {
+    "@common": "github:https://github.com/evocatv/evoca-common-js-library.git",
     "@hapi/boom": "^7.4.11",
     "axios": "^0.21.1",
     "babel-eslint": "^10.1.0",

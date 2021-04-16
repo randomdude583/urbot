@@ -1,4 +1,4 @@
-const { notFound, badRequest } = require('../utils/errors');
+const { notFound } = require('../utils/errors');
 
 const NOT_FOUND = (id) => notFound('KeywordNotFound', `Unable to find the given keyword "${id}".`);
 

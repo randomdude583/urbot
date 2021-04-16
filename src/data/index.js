@@ -4,4 +4,4 @@ module.exports = {
     person: require('./person'),
     keyphrase: require('./keyphrase'),
     response: require('./response'),
-}
+};

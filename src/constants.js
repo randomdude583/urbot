@@ -10,7 +10,7 @@ const triggers = [
     { key: 'katie', id: 7, freq: .5 },
     { key: 'love', id: 8, freq: 1 },
     { key: 'minnesota', id: 9, freq: 1 },
-]
+];
 
 
 const {
@@ -87,4 +87,4 @@ module.exports = {
 
 
     triggers,
-}
+};

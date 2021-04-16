@@ -11,9 +11,9 @@ const shuffle = (array) => {
     }
 
     return arrayCopy;
-}
+};
 
 
 module.exports = {
     shuffle,
-}
+};

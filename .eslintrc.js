@@ -1,1 +1,1 @@
-module.exports = require('@evoca/common/linters/node');
+module.exports = require('@common/linters/node');

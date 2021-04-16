@@ -1,11 +1,10 @@
-// SELECT * FROM keyphrase_response_ref AS ref 
-// LEFT JOIN response ON ref.response_id = response.id
-// WHERE keyphrase_id = 3;
 const errors = require('../errors');
+
+const Logger = require('@common/utils/logger');
+const logger = new Logger(__filename);
 
 const db = require('../utils/mysql');
 const { throwNotFound, parseArrayOfObjFields, parseObjFields } = require('../utils/mysql/helpers');
-
 
 
 const TABLE = 'response';
@@ -17,20 +16,16 @@ const COLUMNS = [
     'created_at',
     'updated_at',
     'deleted_at',
-]
+];
 const REF_TABLE = 'keyphrase_response_ref';
-const REF_COLUMNS = [
-    'keyphrase_id',
-    'response_id',
-]
 
 
-
-//TODO implement schema validation
-
+// TODO implement schema validation
 
 
 const get = async (id) => {
+    logger.extra({ id });
+
     if (!id) {
         throw errors.response.NOT_FOUND('empty id');
     }
@@ -55,6 +50,7 @@ const get = async (id) => {
 };
 
 const getAll = async (keyphraseId = false) => {
+    logger.extra({ keyphraseId });
 
     const stmt = `
     SELECT 
@@ -71,8 +67,7 @@ const getAll = async (keyphraseId = false) => {
 };
 
 
-
 module.exports = {
     get,
     getAll,
-}
+};

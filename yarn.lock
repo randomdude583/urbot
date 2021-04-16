@@ -99,6 +99,10 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
+"@common@github:https://github.com/evocatv/evoca-common-js-library.git":
+  version "1.0.13"
+  resolved "git+ssh://git@github.com/evocatv/evoca-common-js-library.git#6f48339a48ea38eb16b9890c3287b4e2b0fe62e9"
+
 "@discordjs/collection@^0.1.6":
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/@discordjs/collection/-/collection-0.1.6.tgz#9e9a7637f4e4e0688fd8b2b5c63133c91607682c"
