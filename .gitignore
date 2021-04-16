@@ -1,0 +1,10 @@
+# package directories
+node_modules
+jspm_packages
+
+testMaterials/
+samples/
+# Serverless directories
+.serverless
+*.env
+*.secret

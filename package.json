@@ -1,0 +1,59 @@
+{
+  "name": "ghost-of-roy",
+  "version": "0.1.0",
+  "copyright": "© HiddenQuarter 2020",
+  "scripts": {
+    "bump": "$(npm bin)/bump --tag --commit && git push && git push --tags",
+    "start": "node .",
+    "start:development": "NODE_ENV=development nodemon development.js",
+    "start:development:staging": "NODE_ENV=staging nodemon development.js",
+    "start:development:production": "NODE_ENV=production nodemon development.js",
+    "docker:setup": "[ -f \"./.env\" ] && echo \"Symlink already exists.\" || ln -s ./env.development.secret ./.env",
+    "docker:build": "SSH_KEY=$(cat ~/.ssh/id_rsa) docker-compose build --no-cache --force-rm --compress",
+    "docker:start": "yarn docker:setup && docker-compose up",
+    "docker:stop": "docker-compose down",
+    "docker:clean": "docker-compose rm -fsv && yarn docker:build",
+    "docker:clean:hard": "yarn docker:clean && yarn docker:volumes:rm",
+    "docker:attach:api": "docker exec -it evoca-vod-ingest-test_api_1 /bin/bash",
+    "deploy:staging": "./scripts/deploy.sh staging",
+    "deploy:production": "./scripts/deploy.sh production",
+    "fix": "echo \"Running linter...\" && yarn run lint --fix",
+    "lint": "eslint .",
+    "precommit-msg": "echo \"Running precommit...\"",
+    "test": "echo \"Running tests...\" && yarn run test:run ",
+    "test:skip": "echo \"Skipping tests...\"",
+    "test:run": "mocha --timeout 0 --exit",
+    "test:run:single": "mocha --timeout 30000 --exit $1",
+    "test:run:dev": "yarn test:run:single test/test.000.basic.js"
+  },
+  "dependencies": {
+    "@hapi/boom": "^7.4.11",
+    "axios": "^0.21.1",
+    "babel-eslint": "^10.1.0",
+    "dateformat": "^4.5.1",
+    "discord.js": "^12.5.3",
+    "eslint-plugin-prefer-arrow": "^1.2.2",
+    "helmet": "^3.13.0",
+    "morgan": "^1.9.1",
+    "mysql": "^2.18.1",
+    "rimraf": "^3.0.2"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "dotenv": "^6.0.0",
+    "eslint": "^7.18.0",
+    "mocha": "^5.2.0",
+    "nodemon": "^1.18.4",
+    "nyc": "^13.0.1",
+    "pre-commit": "^1.2.2",
+    "random-mac": "^0.0.5",
+    "shelljs": "^0.8.3",
+    "supertest": "^3.3.0",
+    "version-bump-prompt": "^5.0.1"
+  },
+  "pre-commit": [
+    "precommit-msg",
+    "lint",
+    "test"
+  ]
+}

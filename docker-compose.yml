@@ -1,0 +1,60 @@
+version: "3.7"
+
+services:
+  mysql:
+    image: mysql:5.7.30
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    env_file:
+      - env.development.secret
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+    expose:
+      - "${MYSQL_PORT}"
+    ports:
+      - "${MYSQL_PORT}:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./docker/db/init:/docker-entrypoint-initdb.d
+    networks:
+      - net
+
+
+  api:
+    restart: always
+    volumes:
+      - ./:/usr/app
+      - /usr/app/node_modules
+    image: api
+    build:
+      args:
+        - SSH_KEY=${SSH_KEY}
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - env.development.secret
+    environment:
+      - MYSQL_HOST=mysql
+    networks:
+      - net
+    depends_on:
+      - "mysql"
+    command:
+      [
+        "./docker-wait-for-it.sh",
+        "mysql:3306",
+        "--",
+        "yarn",
+        "start:development",
+      ]
+    stdin_open: true
+    tty: true
+
+    
+volumes:
+  mysql-data: {}
+
+networks:
+  net:

@@ -1,0 +1,78 @@
+Arguments: 
+  /home/alex/.nvm/versions/node/v14.16.0/bin/node /home/alex/.yarn/bin/yarn.js add mocha
+
+PATH: 
+  /home/alex/.nvm/versions/node/v14.16.0/bin:/home/alex/.serverless/bin:/home/alex/.yarn/bin:/home/alex/.config/yarn/global/node_modules/.bin:/home/alex/.serverless/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+
+Yarn version: 
+  1.22.5
+
+Node version: 
+  14.16.0
+
+Platform: 
+  linux x64
+
+Trace: 
+  Error: EACCES: permission denied, mkdir '/home/alex/programming/ghost-of-roy/node_modules/abbrev'
+
+npm manifest: 
+  {
+      "name": "ghost-of-roy",
+      "version": "0.1.0",
+      "copyright": "© HiddenQuarter 2020",
+      "scripts": {
+        "bump": "$(npm bin)/bump --tag --commit && git push && git push --tags",
+        "start": "node .",
+        "start:development": "NODE_ENV=development nodemon development.js",
+        "start:development:staging": "NODE_ENV=staging nodemon development.js",
+        "start:development:production": "NODE_ENV=production nodemon development.js",
+        "docker:setup": "[ -f \"./.env\" ] && echo \"Symlink already exists.\" || ln -s ./env.development.secret ./.env",
+        "docker:build": "SSH_KEY=$(cat ~/.ssh/id_rsa) docker-compose build --no-cache --force-rm --compress",
+        "docker:start": "yarn docker:setup && docker-compose up",
+        "docker:stop": "docker-compose down",
+        "docker:clean": "docker-compose rm -fsv && yarn docker:build",
+        "docker:clean:hard": "yarn docker:clean && yarn docker:volumes:rm",
+        "docker:attach:api": "docker exec -it evoca-vod-ingest-test_api_1 /bin/bash",
+        "deploy:staging": "./scripts/deploy.sh staging",
+        "deploy:production": "./scripts/deploy.sh production",
+        "fix": "echo \"Running linter...\" && yarn run lint --fix",
+        "lint": "eslint .",
+        "precommit-msg": "echo \"Running precommit...\"",
+        "test": "echo \"Running tests...\" && yarn run test:run ",
+        "test:skip": "echo \"Skipping tests...\"",
+        "test:run": "mocha --timeout 0 --exit"
+      },
+      "dependencies": {
+        "@hapi/boom": "^7.4.11",
+        "babel-eslint": "^10.1.0",
+        "eslint-plugin-prefer-arrow": "^1.2.2",
+        "helmet": "^3.13.0",
+        "morgan": "^1.9.1",
+        "rimraf": "^3.0.2"
+      },
+      "devDependencies": {
+        "chai": "^4.1.2",
+        "dotenv": "^6.0.0",
+        "eslint": "^7.18.0",
+        "mocha": "^5.2.0",
+        "nodemon": "^1.18.4",
+        "nyc": "^13.0.1",
+        "pre-commit": "^1.2.2",
+        "random-mac": "^0.0.5",
+        "shelljs": "^0.8.3",
+        "supertest": "^3.3.0",
+        "version-bump-prompt": "^5.0.1"
+      },
+      "pre-commit": [
+        "precommit-msg",
+        "lint",
+        "test"
+      ]
+    }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
