@@ -1,5 +1,7 @@
 const dateFormat = require('dateformat');
 
+const { CLIENT } = require('../constants');
+
 const Logger = require('@common/utils/logger');
 const logger = new Logger(__filename);
 
@@ -23,7 +25,7 @@ const listTriggers = async (msg) => {
         i++;
     });
 
-    msg.channel.send(out);
+    CLIENT.sendMessage(msg.chat.id, out);
 };
 
 const tellFamily = (msg) => {
@@ -33,8 +35,8 @@ const tellFamily = (msg) => {
     // Get family chat ID from db
     // Send given message
     // TODO ask for confirmation
-    logger.debug(msg.content.substr(msg.content.indexOf(' ')+1));
-    msg.channel.send('Sent!');
+    logger.debug(msg.text.substr(msg.text.indexOf(' ')+1));
+    CLIENT.sendMessage(msg.chat.id, 'Sent!');
 };
 
 const setBirthday = (msg) => {
@@ -76,7 +78,7 @@ const listBirthdays = async (msg, count=5) => {
 
     }
 
-    msg.channel.send(out);
+    CLIENT.sendMessage(msg.chat.id, out);
 };
 
 
@@ -101,20 +103,20 @@ const joke = async (msg) => {
         }
     });
 
-    msg.channel.send(array[Math.floor(Math.random() * array.length)]);
+    CLIENT.sendMessage(msg.chat.id, array[Math.floor(Math.random() * array.length)]);
 };
 
 
 const checkCommand = async (msg) => {
     logger.extra({ msg });
-    const command = msg.content.toLowerCase();
+    const command = msg.text.toLowerCase();
 
 
     if (command.includes('/learn')) {
         learn(msg);
 
     } else if (command.includes('/triggers')) {
-        listTriggers(msg);
+        await listTriggers(msg);
         
     } else if (command.includes('/tellfamily')) {
         await tellFamily(msg);

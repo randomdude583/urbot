@@ -2,6 +2,8 @@ const data = require('../data');
 const helpers = require('../helpers');
 const commands = require('./commands');
 
+const { CLIENT } = require('../constants');
+
 const Logger = require('@common/utils/logger');
 const logger = new Logger(__filename);
 
@@ -15,9 +17,8 @@ const checkKeyphrase = async (msg) => {
     const phrases = await data.keyphrase.getAll();
 
     let matches = [];
-
     phrases.forEach((phrase) => {
-        if (msg.content.includes(phrase.phrase)) {
+        if (msg.text.toLowerCase().includes(phrase.phrase)) {
             matches.push(phrase);
         }
     });
@@ -39,17 +40,15 @@ const checkKeyphrase = async (msg) => {
                 const response = array[Math.floor(Math.random() * array.length)];
 
                 // Handle command based responses
-                if (response.text[0] === '/') {
-                    msg.content = response.text;
-                    await commands.checkCommand(msg);
-                } else {
-                    let files = [];
-                    if (response.image) {
-                        files.push(response.image);
+                if(response.text){
+                    if (response.text[0] === '/') {
+                        msg.text = response.text;
+                        await commands.checkCommand(msg);
+                    } else {
+                        CLIENT.sendMessage(msg.chat.id, response.text);
                     }
-                    msg.channel.send(response.text, { files });
                 }
-                
+                if(response.image) CLIENT.sendPhoto(msg.chat.id, response.image);
                 break;
             }
         }

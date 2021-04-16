@@ -1,18 +1,3 @@
-
-const triggers = [
-    { key: 'babies', id: 0, freq: 1 },
-    { key: 'pie', id: 1, freq: 1 },
-    { key: 'football', id: 2, freq: 1 },
-    { key: 'Wine', id: 3, freq: 1 },
-    { key: 'Ethel', id: 4, freq: 1 },
-    { key: 'pants', id: 5, freq: .2 },
-    { key: 'pesky', id: 6, freq: .2 },
-    { key: 'katie', id: 7, freq: .5 },
-    { key: 'love', id: 8, freq: 1 },
-    { key: 'minnesota', id: 9, freq: 1 },
-];
-
-
 const {
     PORT = 3000,
 
@@ -43,7 +28,8 @@ const {
 
     MAX_PAYLOAD_BODY = '50mb',
 
-    DISCORD_TOKEN,
+    TELEGRAM_TOKEN,
+    PRIMARY_CHAT_ID,
 
     TZ = 'America/Chicago',
 
@@ -54,6 +40,9 @@ const ROLES = {
     LOG_WRITE: { id: 2, name: 'Log Write' },
     LOG_DELETE: { id: 3, name: 'Log Delete' },
 };
+
+const Telegram = require('node-telegram-bot-api');
+const CLIENT = new Telegram(TELEGRAM_TOKEN, { polling: true });
 
 
 module.exports = {
@@ -81,10 +70,8 @@ module.exports = {
 
     ROLES,
 
-    DISCORD_TOKEN,
+    CLIENT,
+    PRIMARY_CHAT_ID,
 
     TZ,
-
-
-    triggers,
 };
