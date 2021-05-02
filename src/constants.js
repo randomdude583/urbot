@@ -30,6 +30,7 @@ const {
 
     TELEGRAM_TOKEN,
     PRIMARY_CHAT_ID,
+    ADMIN_TELEGRAM_ID,
 
     TZ = 'America/Chicago',
 
@@ -72,6 +73,7 @@ module.exports = {
 
     CLIENT,
     PRIMARY_CHAT_ID,
+    ADMIN_TELEGRAM_ID,
 
     TZ,
 };

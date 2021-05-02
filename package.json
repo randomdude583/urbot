@@ -1,5 +1,5 @@
 {
-  "name": "ghost-of-roy",
+  "name": "urbot",
   "version": "0.1.0",
   "copyright": "© HiddenQuarter 2020",
   "scripts": {
@@ -9,8 +9,9 @@
     "start:development:staging": "NODE_ENV=staging nodemon development.js",
     "start:development:production": "NODE_ENV=production nodemon development.js",
     "docker:setup": "[ -f \"./.env\" ] && echo \"Symlink already exists.\" || ln -s ./env.development.secret ./.env",
-    "docker:build": "SSH_KEY=$(cat ~/.ssh/id_rsa) docker-compose build --no-cache --force-rm --compress",
-    "docker:start": "yarn docker:setup && docker-compose up",
+    "docker:build": "SSH_KEY=$(cat ~/.ssh/id_rsa) docker-compose -f docker-compose.yml -f docker-compose.staging.yml build --no-cache --force-rm --compress",
+    "docker:build:production": "SSH_KEY=$(cat ~/.ssh/id_rsa) docker-compose -f docker-compose.yml build --no-cache --force-rm --compress && docker save urbot > urbot.tar",
+    "docker:start": "yarn docker:setup && docker-compose -f docker-compose.yml -f docker-compose.staging.yml up",
     "docker:stop": "docker-compose down",
     "docker:clean": "docker-compose rm -fsv && yarn docker:build",
     "docker:clean:hard": "yarn docker:clean && yarn docker:volumes:rm",
@@ -27,7 +28,7 @@
     "test:run:dev": "yarn test:run:single test/test.000.basic.js"
   },
   "dependencies": {
-    "@common": "github:https://github.com/evocatv/evoca-common-js-library.git",
+    "@common": "github:https://github.com/randomdude583/js-common.git",
     "@hapi/boom": "^7.4.11",
     "axios": "^0.21.1",
     "babel-eslint": "^10.1.0",

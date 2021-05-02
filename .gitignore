@@ -4,7 +4,10 @@ jspm_packages
 
 testMaterials/
 samples/
-# Serverless directories
-.serverless
-*.env
+
+# secrets
 *.secret
+*.env
+
+# outputs
+*.tar

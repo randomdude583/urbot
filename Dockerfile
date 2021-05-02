@@ -19,6 +19,9 @@ RUN mkdir -p /root/.ssh/ && \
 COPY package.json ./
 COPY yarn.lock ./
 
+# Bundle app source
+COPY . .
+
 # Install dependencies for the app
 # RUN yarn install --verbose
 RUN yarn install
@@ -29,4 +32,4 @@ RUN yarn install
 # # Print files in this image (everything that was copied over)
 # RUN ls -lsa
 
-CMD [ "yarn", "start:development" ]
+CMD [ "yarn", "start:development:production" ]

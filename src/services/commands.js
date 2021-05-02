@@ -1,6 +1,6 @@
 const dateFormat = require('dateformat');
 
-const { CLIENT } = require('../constants');
+const { CLIENT, PRIMARY_CHAT_ID, ADMIN_TELEGRAM_ID } = require('../constants');
 
 const Logger = require('@common/utils/logger');
 const logger = new Logger(__filename);
@@ -11,6 +11,14 @@ const data = require('../data');
 const learn = (msg) => {
     logger.extra({ msg });
 };
+
+const getChatId = async (msg) => {
+    logger.extra({ msg });
+
+    if(ADMIN_TELEGRAM_ID){
+        CLIENT.sendMessage(ADMIN_TELEGRAM_ID, msg.chat.id);
+    }
+}
 
 // Done
 const listTriggers = async (msg) => {
@@ -31,12 +39,16 @@ const listTriggers = async (msg) => {
 const tellFamily = (msg) => {
     logger.extra({ msg });
 
-    // Authenticate sender
-    // Get family chat ID from db
-    // Send given message
-    // TODO ask for confirmation
-    logger.debug(msg.text.substr(msg.text.indexOf(' ')+1));
-    CLIENT.sendMessage(msg.chat.id, 'Sent!');
+    if(msg.from.id == ADMIN_TELEGRAM_ID){
+        //TODO ask for confirmation
+        console.log('primary chat id: ', PRIMARY_CHAT_ID);
+        if(PRIMARY_CHAT_ID){
+            CLIENT.sendMessage(PRIMARY_CHAT_ID, msg.text.substr(msg.text.indexOf(' ')+1));
+            CLIENT.sendMessage(msg.chat.id, 'Sent!');
+        } else {
+            CLIENT.sendMessage(msg.chat.id, 'No Primary ChatID!');
+        }
+    }
 };
 
 const setBirthday = (msg) => {
@@ -114,6 +126,9 @@ const checkCommand = async (msg) => {
 
     if (command.includes('/learn')) {
         learn(msg);
+
+    } else if (command.includes('/getchatid')) {
+        await getChatId(msg);
 
     } else if (command.includes('/triggers')) {
         await listTriggers(msg);
